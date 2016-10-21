@@ -31,8 +31,10 @@ func main() {
 		}
 		cmdName := "git"
 		cmdArgs := []string {"clone","/home/ubuntu/localrepo.git"} //git clone --bare, git fetch, git clone, git checkout
-		if _, err = exec.Command(cmdName, cmdArgs...).Output(); err != nil {
+		var out []byte
+		if out, err = exec.Command(cmdName, cmdArgs...).Output(); err != nil {
 			fmt.Fprintln(os.Stderr, "There was an error running git clone command: ", err)
+			fmt.Println("This bug", out)
 			os.Exit(1)
 		} //download latest files
 		gitcheckout(event.Commit)
