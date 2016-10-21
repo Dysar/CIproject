@@ -34,7 +34,7 @@ func main() {
 		var out []byte
 		if out, err = exec.Command(cmdName, cmdArgs...).Output(); err != nil {
 			fmt.Fprintln(os.Stderr, "There was an error running git clone command: ", err)
-			fmt.Println("This bug", out)
+			fmt.Fprintln(os.Stderr,"This bug", out)
 			os.Exit(1)
 		} //download latest files
 		gitcheckout(event.Commit)
