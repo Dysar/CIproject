@@ -97,7 +97,7 @@ func gitcheckout(hash string){
 	cmdName := "git"
 	cmdArgs := []string {"checkout", hash} //git checkout
 	if _, err := exec.Command(cmdName, cmdArgs...).Output(); err != nil {
-		fmt.Fprintln(os.Stderr, "There was an error running git clone command: ", err)
+		fmt.Fprintln(os.Stderr, "There was an error running git checkout command: ", err)
 		os.Exit(1)
 	}
 }
