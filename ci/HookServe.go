@@ -5,6 +5,7 @@ import (
 	"github.com/phayes/hookserve/hookserve"
 	"os"
 	"os/exec"
+	"bytes"
 )
 
 func main() {
@@ -96,8 +97,15 @@ func gitpreparation(){
 func gitcheckout(hash string){
 	cmdName := "git"
 	cmdArgs := []string {"reset","--hard", hash} //git checkout
-	if out, err := exec.Command(cmdName, cmdArgs...).Output(); err != nil {
-		fmt.Fprintln(os.Stderr, "There was an error running git reset command in commit repo: ", out)
+	command :=exec.Command(cmdName, cmdArgs...)
+	stdout := bytes.NewBuffer(nil)
+	stderr := bytes.NewBuffer(nil)
+	command.Stdout = stdout
+	command.Stderr = stderr
+	if err := exec.Command(cmdName, cmdArgs...).Run(); err != nil {
+		fmt.Fprintln(os.Stderr, "There was an error running git reset command in commit repo: ", err)
+		fmt.Println("Stdout", stdout.String())
+		fmt.Println("Stderr", stderr.String())
 		os.Exit(1)
 	}
 }
