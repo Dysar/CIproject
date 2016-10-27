@@ -96,8 +96,8 @@ func gitpreparation(){
 func gitcheckout(hash string){
 	cmdName := "git"
 	cmdArgs := []string {"reset","--hard", hash} //git checkout
-	if _, err := exec.Command(cmdName, cmdArgs...).Output(); err != nil {
-		fmt.Fprintln(os.Stderr, "There was an error running git reset command in commit repo: ", err)
+	if out, err := exec.Command(cmdName, cmdArgs...).Output(); err != nil {
+		fmt.Fprintln(os.Stderr, "There was an error running git reset command in commit repo: ", out)
 		os.Exit(1)
 	}
 }
