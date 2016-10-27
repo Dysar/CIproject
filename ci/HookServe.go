@@ -95,14 +95,8 @@ func gitpreparation(){
 }
 func gitcheckout(hash string){
 	cmdName := "git"
-	cmdArgs := []string {"fetch", "https://github.com/Dysar/CIproject"} //git fetch
+	cmdArgs := []string {"reset","--hard", hash} //git checkout
 	if _, err := exec.Command(cmdName, cmdArgs...).Output(); err != nil {
-		fmt.Fprintln(os.Stderr, "There was an error running git fetch command in commit repo: ", err)
-		os.Exit(1)
-	}
-	cmdName2 := "git"
-	cmdArgs2 := []string {"reset","--hard", hash} //git checkout
-	if _, err := exec.Command(cmdName2, cmdArgs2...).Output(); err != nil {
 		fmt.Fprintln(os.Stderr, "There was an error running git reset command in commit repo: ", err)
 		os.Exit(1)
 	}
