@@ -7,12 +7,12 @@ import (
 
 func TestResult(t *testing.T) {
 	if ciproject.Result(20, 15) > 50 {
-		t.Error("GGG man")
+		t.Error("OP man")
 	}
 }
 
 func TestResultFail(t *testing.T) {
-	if ciproject.Result(20, 15) > 50 {
+	if ciproject.Result(20, 15) < 50 {
 		t.Error("GG man")
 	}
 }

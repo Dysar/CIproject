@@ -98,7 +98,7 @@ func gitcheckout(hash string){
 	cmdName := "git"
 	cmdArgs := []string {"reset","--hard", hash} //git checkout
 	if err := exec.Command(cmdName, cmdArgs...).Run(); err != nil {
-		fmt.Fprintln(os.Stderr, "There was an error running git reset command in commit repo: ", err)
+		fmt.Fprintln(os.Stderr, "There was an error running git reset command in commit repo: ", err) //error is that you have to cd into that dir, localrepo, and even there is says Could not parse or is not a tree
 		os.Exit(1)
 	}
 }
