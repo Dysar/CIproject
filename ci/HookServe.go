@@ -99,6 +99,7 @@ func gitpreparation(){
 
 }
 func gitcheckout(hash string){
+	fmt.Println("ololo")
 	if err := os.Chdir(hash); err != nil {
 		panic(err)
 	}
