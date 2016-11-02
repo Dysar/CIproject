@@ -15,7 +15,7 @@ func main() {
 	server.GoListenAndServe()
 
 	gitpreparation()
-
+	
 	// Everytime the server receives a webhook event, print the results
 	for event := range server.Events {
 		fmt.Println(event.Owner + " " + event.Repo + " " + event.Branch + " " + event.Commit)
