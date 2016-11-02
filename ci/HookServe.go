@@ -5,6 +5,7 @@ import (
 	"github.com/phayes/hookserve/hookserve"
 	"os"
 	"os/exec"
+	"time"
 )
 
 func main() {
@@ -99,6 +100,7 @@ func gitpreparation(){
 
 }
 func gitcheckout(hash string){
+	fmt.Println(time.Now)
 	if err := os.Chdir(hash); err != nil {
 		panic(err)
 	}
