@@ -35,6 +35,10 @@ func main() {
 			fmt.Fprintln(os.Stderr, "There was an error running git clone command: ", err)
 			os.Exit(1)
 		} //download latest files
+		err := os.Rename("localrepo",event.Commit)
+		if err != nil {
+			panic(err)
+		}
 		gitcheckout(event.Commit)
 		gotest() //run the test in that repo go test in that repo
 		if gotest(){
