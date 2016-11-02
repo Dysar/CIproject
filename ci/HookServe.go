@@ -41,6 +41,7 @@ func main() {
 			build() //build binaries
 		} else {
 			fmt.Println("Test failed")
+			os.Exit(1)
 		}
 		//send binaries to Slack via slackbot mazafaka
 	}

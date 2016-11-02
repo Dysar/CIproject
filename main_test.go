@@ -12,7 +12,7 @@ func TestResult(t *testing.T) {
 }
 
 func TestResultFail(t *testing.T) {
-	if ciproject.Result(20, 15) < 50 {
+	if ciproject.Result(20, 15) > 30 {
 		t.Error("GG man")
 	}
 }
