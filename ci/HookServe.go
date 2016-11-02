@@ -19,18 +19,8 @@ func main() {
 	// Everytime the server receives a webhook event, print the results
 	for event := range server.Events {
 		fmt.Println(event.Owner + " " + event.Repo + " " + event.Branch + " " + event.Commit)
-		if err := os.Chdir("/home/ubuntu"); err != nil {
-			panic(err)
-		}
-		//err := os.Mkdir(event.Commit, 755) //create clone repo for this commit
-		//if err != nil {
-		//	panic(err)
-		//}
-		//if err = os.Chdir(event.Commit); err != nil {
-		//	panic(err)
-		//}
 		cmdName := "git"
-		cmdArgs := []string {"clone","/home/ubuntu/localrepo.git"} //git clone --bare, git fetch, git clone, git checkout
+		cmdArgs := []string {"clone","/home/ubuntu/localrepo.git", "localrepo"} //git clone --bare, git fetch, git clone, git checkout
 		if _, err := exec.Command(cmdName, cmdArgs...).Output(); err != nil {
 			fmt.Fprintln(os.Stderr, "There was an error running git clone command: ", err)
 			os.Exit(1)
@@ -84,7 +74,7 @@ func gitpreparation(){
 	//}
 
 	cmdName := "git"
-	cmdArgs := []string {"clone","--bare","https://github.com/Dysar/CIproject.git"} //git clone --bare
+	cmdArgs := []string {"clone","--bare","https://github.com/Dysar/CIproject.git", path} //git clone --bare
 	if _, err := exec.Command(cmdName, cmdArgs...).Output(); err != nil {
 		fmt.Fprintln(os.Stderr, "Repository already exits", err)
 	}
