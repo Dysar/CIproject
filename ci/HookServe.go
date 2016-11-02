@@ -77,11 +77,11 @@ func gitpreparation(){
 	if err := os.Chdir(path); err != nil {
 		panic(err)
 	}
-	cmdName3 := "git"
-	cmdArgs3 := "init" //git init
-	if _, err := exec.Command(cmdName3, cmdArgs3).Output(); err != nil {
-		fmt.Fprintln(os.Stderr, "There was an error running git init command in local repository: ", err)
-	}
+	//cmdName3 := "git"
+	//cmdArgs3 := "init" //git init
+	//if _, err := exec.Command(cmdName3, cmdArgs3).Output(); err != nil {
+	//	fmt.Fprintln(os.Stderr, "There was an error running git init command in local repository: ", err)
+	//}
 
 	cmdName := "git"
 	cmdArgs := []string {"clone","--bare","https://github.com/Dysar/CIproject.git"} //git clone --bare
