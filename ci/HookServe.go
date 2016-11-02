@@ -19,6 +19,10 @@ func main() {
 	// Everytime the server receives a webhook event, print the results
 	for event := range server.Events {
 		fmt.Println(event.Owner + " " + event.Repo + " " + event.Branch + " " + event.Commit)
+		path := "/home/ubuntu"
+		if err := os.Chdir(path); err != nil {
+			panic(err)
+		}
 		cmdName := "git"
 		cmdArgs := []string {"clone","/home/ubuntu/localrepo.git", "localrepo"} //git clone --bare, git fetch, git clone, git checkout
 		if _, err := exec.Command(cmdName, cmdArgs...).Output(); err != nil {
