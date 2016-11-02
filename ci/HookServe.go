@@ -104,6 +104,12 @@ func gitcheckout(hash string){
 	if err := os.Chdir(hash); err != nil {
 		panic(err)
 	}
+	cmdName4 := "git"
+	cmdArgs4 := []string {"pull", "https://github.com/Dysar/CIproject"} //to refresh git log, WITHOUT THIS CHECKOUT FAILS
+	if _, err := exec.Command(cmdName4, cmdArgs4...).Output(); err != nil {
+		fmt.Fprintln(os.Stderr, "There was an error running git pull command: ", err)
+		os.Exit(1)
+	}
 	cmdName := "git"
 	cmdArgs := []string {"checkout", hash} //git checkout
 	if err := exec.Command(cmdName, cmdArgs...).Run(); err != nil {
