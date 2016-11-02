@@ -89,19 +89,19 @@ func gitpreparation(){
 		fmt.Fprintln(os.Stderr, "Repository already exits", err)
 	}
 
-	cmdName4 := "git"
-	cmdArgs4 := []string {"pull", "https://github.com/Dysar/CIproject"} //git pull
-	if _, err := exec.Command(cmdName4, cmdArgs4...).Output(); err != nil {
-		fmt.Fprintln(os.Stderr, "There was an error running git pull command: ", err)
-		os.Exit(1)
-	}
-
-	cmdName2 := "git"
-	cmdArgs2 := []string {"fetch", "https://github.com/Dysar/CIproject"} //git fetch
-	if _, err := exec.Command(cmdName2, cmdArgs2...).Output(); err != nil {
-		fmt.Fprintln(os.Stderr, "There was an error running git fetch command: ", err)
-		os.Exit(1)
-	}
+	//cmdName4 := "git"
+	//cmdArgs4 := []string {"pull", "https://github.com/Dysar/CIproject"} //git pull
+	//if _, err := exec.Command(cmdName4, cmdArgs4...).Output(); err != nil {
+	//	fmt.Fprintln(os.Stderr, "There was an error running git pull command: ", err)
+	//	os.Exit(1)
+	//}
+	//
+	//cmdName2 := "git"
+	//cmdArgs2 := []string {"fetch", "https://github.com/Dysar/CIproject"} //git fetch
+	//if _, err := exec.Command(cmdName2, cmdArgs2...).Output(); err != nil {
+	//	fmt.Fprintln(os.Stderr, "There was an error running git fetch command: ", err)
+	//	os.Exit(1)
+	//}
 
 }
 func gitcheckout(hash string){
