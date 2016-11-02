@@ -15,7 +15,7 @@ func main() {
 	server.GoListenAndServe()
 
 	gitpreparation()
-	
+
 	// Everytime the server receives a webhook event, print the results
 	for event := range server.Events {
 		fmt.Println(event.Owner + " " + event.Repo + " " + event.Branch + " " + event.Commit)
@@ -95,10 +95,13 @@ func gitpreparation(){
 
 }
 func gitcheckout(hash string){
+	if err := os.Chdir(hash); err != nil {
+		panic(err)
+	}
 	cmdName := "git"
-	cmdArgs := []string {"reset","--hard", hash} //git checkout
+	cmdArgs := []string {"checkout", hash} //git checkout
 	if err := exec.Command(cmdName, cmdArgs...).Run(); err != nil {
-		fmt.Fprintln(os.Stderr, "There was an error running git reset command in commit repo: ", err) //error is that you have to cd into that dir, localrepo, and even there is says Could not parse or is not a tree
+		fmt.Fprintln(os.Stderr, "There was an error running git checkout command in commit repo: ", err) //error is that you have to cd into that dir, localrepo, and even there is says Could not parse or is not a tree
 		os.Exit(1)
 	}
 }
