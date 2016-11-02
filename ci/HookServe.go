@@ -47,7 +47,7 @@ func main() {
 		} else {
 			fmt.Println("Test failed")
 		}
-		//send binaries to Slack via slackbot
+		//send binaries to Slack via slackbot mazafaka
 	}
 }
 func gotest()(bool){
