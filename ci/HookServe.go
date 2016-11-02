@@ -22,27 +22,27 @@ func main() {
 		if err := os.Chdir("/home/ubuntu"); err != nil {
 			panic(err)
 		}
-		err := os.Mkdir(event.Commit, 755) //create clone repo for this commit
-		if err != nil {
-			panic(err)
-		}
-		if err = os.Chdir(event.Commit); err != nil {
-			panic(err)
-		}
+		//err := os.Mkdir(event.Commit, 755) //create clone repo for this commit
+		//if err != nil {
+		//	panic(err)
+		//}
+		//if err = os.Chdir(event.Commit); err != nil {
+		//	panic(err)
+		//}
 		cmdName := "git"
 		cmdArgs := []string {"clone","/home/ubuntu/localrepo.git"} //git clone --bare, git fetch, git clone, git checkout
-		var out []byte
-		if out, err = exec.Command(cmdName, cmdArgs...).Output(); err != nil {
+		if _, err := exec.Command(cmdName, cmdArgs...).Output(); err != nil {
 			fmt.Fprintln(os.Stderr, "There was an error running git clone command: ", err)
-			fmt.Fprintln(os.Stderr,"This bug", out)
 			os.Exit(1)
 		} //download latest files
 		gitcheckout(event.Commit)
 		gotest() //run the test in that repo go test in that repo
-		if err != nil {
-			panic(err) //check the test status
+		if gotest(){
+			fmt.Println("Test passes")
+			build() //build binaries
+		} else {
+			fmt.Println("Test failed")
 		}
-		build() //build binaries
 		//send binaries to Slack via slackbot
 	}
 }
