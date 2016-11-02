@@ -5,7 +5,6 @@ import (
 	"github.com/phayes/hookserve/hookserve"
 	"os"
 	"os/exec"
-	"bytes"
 )
 
 func main() {
