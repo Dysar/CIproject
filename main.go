@@ -1,8 +1,8 @@
-package main
+package maino
 
 import "fmt"
 
-func main() {
+func maino() {
 	a := 10
 	b := 9
 	fmt.Println(Result(a,b))
