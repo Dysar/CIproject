@@ -1,4 +1,4 @@
-package maino_test
+package main_test
 
 import (
 	"testing"
@@ -6,7 +6,7 @@ import (
 )
 
 func TestResult(t *testing.T) {
-	if ciproject.Result(20, 15) > 50 {
+	if err := ciproject.Result(20, 15) < 50; err != nil {
 		t.Error("test cannot fail")
 	}
 }
