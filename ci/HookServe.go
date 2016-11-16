@@ -49,7 +49,7 @@ func main() {
 func gotest()(bool){
 	cmdName := "go"
 	cmdArgs := "test"
-	if _, err := exec.Command(cmdName, cmdArgs).Output(); err != nil {
+	if _, err := exec.Command(cmdName, cmdArgs).CombinedOutput(); err != nil {
 		fmt.Fprintln(os.Stderr, "There was an error running tests: ", err)
 		return false
 	}
