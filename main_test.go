@@ -1,8 +1,8 @@
-package main_test
+package ciproject_test
 
 import (
 	"testing"
-	ciproject "../CIproject"
+	ciproject "."
 )
 
 func TestResult(t *testing.T) {
