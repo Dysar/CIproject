@@ -116,6 +116,7 @@ func gitcheckout(hash string){
 }
 
 func slackbot(rtm *slack.RTM, message string) {
+	fmt.Println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/n")
 	Loop:
 	for {
 		select {
