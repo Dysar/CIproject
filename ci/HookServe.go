@@ -17,7 +17,7 @@ func main() {
 	server.Secret = "supersecretcode"
 	server.GoListenAndServe()
 
-	api := slack.New("xoxb-107838516693-yvqdMnGU8zant7icgXtVOnl4")
+	api := slack.New("xoxb-107838516693-fPRh1G5nMAG69F7PD4Lw7evq")
 	logger := log.New(os.Stdout, "slack-bot: ", log.Lshortfile|log.LstdFlags)
 	slack.SetLogger(logger)
 	api.SetDebug(true)
@@ -51,12 +51,10 @@ func main() {
 		if gotest(){
 			msg := fmt.Sprintf("Tests passed for %d commit", event.Commit)
 			slackbot(rtm, msg)
-			fmt.Println("Test passed")
 			os.Exit(0)
 		} else {
 			msg := fmt.Sprintf("Tests failed for %d commit", event.Commit)
 			slackbot(rtm, msg)
-			fmt.Println("Test failed")
 			os.Exit(1)
 		}
 		//send binaries to Slack via slackbot mazafaka
@@ -130,8 +128,10 @@ func slackbot(rtm *slack.RTM, message string) {
 				fmt.Println("Infos:", ev.Info)
 				fmt.Println("Connection counter:", ev.ConnectionCount)
 				rtm.SendMessage(rtm.NewOutgoingMessage(message, "D351BB3EC"))
+				return
 			// Replace #general with your Channel ID
 			}
 		}
 	}
+	return
 }
