@@ -4,11 +4,15 @@ import (
 	"fmt"
 	"github.com/phayes/hookserve/hookserve"
 	"github.com/nlopes/slack"
+	"encoding/json"
 	"os"
 	"os/exec"
 	"time"
 	"log"
 )
+type Configuration struct {
+	Token    string
+}
 
 func main() {
 	server := hookserve.NewServer()
@@ -17,7 +21,18 @@ func main() {
 	server.Secret = "supersecretcode"
 	server.GoListenAndServe()
 
-	api := slack.New("xoxb-107838516693-Kg07cXQvIZgYiXMXf3hALRzO")
+	if err := os.Chdir("home/ubuntu"); err != nil {
+		panic(err)
+	}
+	file, _ := os.Open("conf.json")
+	decoder := json.NewDecoder(file)
+	configuration := Configuration{}
+	err := decoder.Decode(&configuration)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+
+	api := slack.New(configuration.Token)
 	logger := log.New(os.Stdout, "slack-bot: ", log.Lshortfile|log.LstdFlags)
 	slack.SetLogger(logger)
 	api.SetDebug(true)
@@ -49,11 +64,11 @@ func main() {
 		rtm := api.NewRTM()
 		go rtm.ManageConnection()
 		if gotest(){
-			msg := fmt.Sprintf("Tests passed for %s", event.Commit)
+			msg := fmt.Sprintf("Tests passed for %s commit", event.Commit)
 			slackbot(rtm, msg)
 			os.Exit(0)
 		} else {
-			msg := fmt.Sprintf("Tests failed for %s", event.Commit)
+			msg := fmt.Sprintf("Tests failed for %s commit", event.Commit)
 			slackbot(rtm, msg)
 			os.Exit(1)
 		}
@@ -116,6 +131,7 @@ func gitcheckout(hash string){
 }
 
 func slackbot(rtm *slack.RTM, message string) {
+
 	Loop:
 	for {
 		select {
