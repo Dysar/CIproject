@@ -17,7 +17,7 @@ func main() {
 	server.Secret = "supersecretcode"
 	server.GoListenAndServe()
 
-	api := slack.New("xoxb-107838516693-LsFV64ENWWfbc2RQm1s6J6ty")
+	api := slack.New("xoxb-107838516693-WpnGkMdN9vqRaAZmexVtdMMX")
 	logger := log.New(os.Stdout, "slack-bot: ", log.Lshortfile|log.LstdFlags)
 	slack.SetLogger(logger)
 	api.SetDebug(true)
@@ -125,9 +125,9 @@ func slackbot(rtm *slack.RTM, message string) {
 			switch ev := msg.Data.(type) {
 
 			case *slack.ConnectedEvent:
+				rtm.SendMessage(rtm.NewOutgoingMessage(message, "D351BB3EC"))
 				fmt.Println("Infos:", ev.Info)
 				fmt.Println("Connection counter:", ev.ConnectionCount)
-				rtm.SendMessage(rtm.NewOutgoingMessage(message, "D351BB3EC"))
 				return
 			case *slack.PresenceChangeEvent:
 				fmt.Printf("Presence Change: %v\n", ev)
