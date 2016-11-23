@@ -17,7 +17,7 @@ func main() {
 	server.Secret = "supersecretcode"
 	server.GoListenAndServe()
 
-	api := slack.New("xoxb-107838516693-EPMXMBCO2TY1ECocRxTtCYnb")
+	api := slack.New("xoxb-107838516693-Kg07cXQvIZgYiXMXf3hALRzO")
 	logger := log.New(os.Stdout, "slack-bot: ", log.Lshortfile|log.LstdFlags)
 	slack.SetLogger(logger)
 	api.SetDebug(true)
@@ -116,7 +116,6 @@ func gitcheckout(hash string){
 }
 
 func slackbot(rtm *slack.RTM, message string) {
-	fmt.Println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/n")
 	Loop:
 	for {
 		select {
