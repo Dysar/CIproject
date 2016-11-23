@@ -117,7 +117,7 @@ func gitcheckout(hash string){
 	}
 }
 
-func slackbot(rtm slack.RTM, msg string) {
+func slackbot(rtm *slack.RTM, message string) {
 	for {
 		select {
 		case msg := <-rtm.IncomingEvents:
@@ -129,7 +129,7 @@ func slackbot(rtm slack.RTM, msg string) {
 			case *slack.ConnectedEvent:
 				fmt.Println("Infos:", ev.Info)
 				fmt.Println("Connection counter:", ev.ConnectionCount)
-				rtm.SendMessage(rtm.NewOutgoingMessage(msg, "D351BB3EC"))
+				rtm.SendMessage(rtm.NewOutgoingMessage(message, "D351BB3EC"))
 			// Replace #general with your Channel ID
 			}
 		}
