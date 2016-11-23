@@ -49,11 +49,11 @@ func main() {
 		rtm := api.NewRTM()
 		go rtm.ManageConnection()
 		if gotest(){
-			msg := fmt.Sprintf("Tests passed for %d commit", event.Commit)
+			msg := fmt.Sprintf("Tests passed for", event.Commit)
 			slackbot(rtm, msg)
 			os.Exit(0)
 		} else {
-			msg := fmt.Sprintf("Tests failed for %d commit", event.Commit)
+			msg := fmt.Sprintf("Tests failed for", event.Commit)
 			slackbot(rtm, msg)
 			os.Exit(1)
 		}
