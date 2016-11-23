@@ -17,7 +17,7 @@ func main() {
 	server.Secret = "supersecretcode"
 	server.GoListenAndServe()
 
-	api := slack.New("xoxb-107838516693-fPRh1G5nMAG69F7PD4Lw7evq")
+	api := slack.New("xoxb-107838516693-LsFV64ENWWfbc2RQm1s6J6ty")
 	logger := log.New(os.Stdout, "slack-bot: ", log.Lshortfile|log.LstdFlags)
 	slack.SetLogger(logger)
 	api.SetDebug(true)
@@ -116,23 +116,32 @@ func gitcheckout(hash string){
 }
 
 func slackbot(rtm *slack.RTM, message string) {
+	Loop:
 	for {
 		select {
 		case msg := <-rtm.IncomingEvents:
 			fmt.Print("Event Received: ")
 			switch ev := msg.Data.(type) {
-			//case *slack.HelloEvent:
-			//	rtm.SendMessage(rtm.NewOutgoingMessage("Hello event received", "D351BB3EC"))
 
 			case *slack.ConnectedEvent:
 				fmt.Println("Infos:", ev.Info)
 				fmt.Println("Connection counter:", ev.ConnectionCount)
 				rtm.SendMessage(rtm.NewOutgoingMessage(message, "D351BB3EC"))
 				return
-			// Replace #general with your Channel ID
+			case *slack.PresenceChangeEvent:
+				fmt.Printf("Presence Change: %v\n", ev)
+
+			case *slack.LatencyReport:
+				fmt.Printf("Current latency: %v\n", ev.Value)
+
+			case *slack.RTMError:
+				fmt.Printf("Error: %s\n", ev.Error())
+
+			case *slack.InvalidAuthEvent:
+				fmt.Printf("Invalid credentials")
+				break Loop
 			}
 		}
 	}
 	return
 }
-//asdasdasdasd
