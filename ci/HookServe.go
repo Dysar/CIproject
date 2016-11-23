@@ -17,6 +17,14 @@ func main() {
 	server.Secret = "supersecretcode"
 	server.GoListenAndServe()
 
+	api := slack.New("xoxb-107838516693-yvqdMnGU8zant7icgXtVOnl4")
+	logger := log.New(os.Stdout, "slack-bot: ", log.Lshortfile|log.LstdFlags)
+	slack.SetLogger(logger)
+	api.SetDebug(true)
+
+	rtm := api.NewRTM()
+	go rtm.ManageConnection()
+
 	gitpreparation()
 
 	// Everytime the server receives a webhook event, print the results
@@ -38,19 +46,16 @@ func main() {
 		}
 		gitcheckout(event.Commit)
 		gotest() //run the test in that repo go test in that repo
-		api := slack.New("xoxb-107838516693-yvqdMnGU8zant7icgXtVOnl4")
-		logger := log.New(os.Stdout, "slack-bot: ", log.Lshortfile|log.LstdFlags)
-		slack.SetLogger(logger)
-		api.SetDebug(true)
 		rtm := api.NewRTM()
+		go rtm.ManageConnection()
 		if gotest(){
 			msg := fmt.Sprintf("Tests passed for %d commit", event.Commit)
+			slackbot(rtm, msg)
 			fmt.Println("Test passed")
-			rtm.SendMessage(rtm.NewOutgoingMessage(msg, "#general"))
 			os.Exit(0)
 		} else {
 			msg := fmt.Sprintf("Tests failed for %d commit", event.Commit)
-			rtm.SendMessage(rtm.NewOutgoingMessage(msg, "#general"))
+			slackbot(rtm, msg)
 			fmt.Println("Test failed")
 			os.Exit(1)
 		}
@@ -109,5 +114,24 @@ func gitcheckout(hash string){
 	if err := exec.Command(cmdName, cmdArgs...).Run(); err != nil {
 		fmt.Fprintln(os.Stderr, "There was an error running git checkout command in commit repo: ", err) //error is that you have to cd into that dir, localrepo, and even there is says Could not parse or is not a tree
 		os.Exit(1)
+	}
+}
+
+func slackbot(rtm slack.RTM, msg string) {
+	for {
+		select {
+		case msg := <-rtm.IncomingEvents:
+			fmt.Print("Event Received: ")
+			switch ev := msg.Data.(type) {
+			//case *slack.HelloEvent:
+			//	rtm.SendMessage(rtm.NewOutgoingMessage("Hello event received", "D351BB3EC"))
+
+			case *slack.ConnectedEvent:
+				fmt.Println("Infos:", ev.Info)
+				fmt.Println("Connection counter:", ev.ConnectionCount)
+				rtm.SendMessage(rtm.NewOutgoingMessage(msg, "D351BB3EC"))
+			// Replace #general with your Channel ID
+			}
+		}
 	}
 }
