@@ -17,7 +17,7 @@ func main() {
 	server.Secret = "supersecretcode"
 	server.GoListenAndServe()
 
-	api := slack.New("xoxb-107838516693-WpnGkMdN9vqRaAZmexVtdMMX")
+	api := slack.New("xoxb-107838516693-EPMXMBCO2TY1ECocRxTtCYnb")
 	logger := log.New(os.Stdout, "slack-bot: ", log.Lshortfile|log.LstdFlags)
 	slack.SetLogger(logger)
 	api.SetDebug(true)
@@ -49,11 +49,11 @@ func main() {
 		rtm := api.NewRTM()
 		go rtm.ManageConnection()
 		if gotest(){
-			msg := fmt.Sprintf("Tests passed for", event.Commit)
+			msg := fmt.Sprintf("Tests passed for %s", event.Commit)
 			slackbot(rtm, msg)
 			os.Exit(0)
 		} else {
-			msg := fmt.Sprintf("Tests failed for", event.Commit)
+			msg := fmt.Sprintf("Tests failed for %s", event.Commit)
 			slackbot(rtm, msg)
 			os.Exit(1)
 		}
