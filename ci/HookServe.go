@@ -3,9 +3,11 @@ package main
 import (
 	"fmt"
 	"github.com/phayes/hookserve/hookserve"
+	"github.com/nlopes/slack"
 	"os"
 	"os/exec"
 	"time"
+	"log"
 )
 
 func main() {
@@ -36,10 +38,19 @@ func main() {
 		}
 		gitcheckout(event.Commit)
 		gotest() //run the test in that repo go test in that repo
+		api := slack.New("xoxb-107838516693-yvqdMnGU8zant7icgXtVOnl4")
+		logger := log.New(os.Stdout, "slack-bot: ", log.Lshortfile|log.LstdFlags)
+		slack.SetLogger(logger)
+		api.SetDebug(true)
+		rtm := api.NewRTM()
 		if gotest(){
-			fmt.Println("Test passes")
-			build() //build binaries
+			msg := fmt.Sprintf("Tests passed for %d commit", event.Commit)
+			fmt.Println("Test passed")
+			rtm.SendMessage(rtm.NewOutgoingMessage(msg, "#general"))
+			os.Exit(0)
 		} else {
+			msg := fmt.Sprintf("Tests failed for %d commit", event.Commit)
+			rtm.SendMessage(rtm.NewOutgoingMessage(msg, "#general"))
 			fmt.Println("Test failed")
 			os.Exit(1)
 		}
@@ -62,6 +73,7 @@ func build(){
 		fmt.Fprintln(os.Stderr, "Build failed: ", err)
 		os.Exit(1)
 	}
+	fmt.Println("Binaries were build")
 }
 func gitpreparation(){
 	path := "/home/ubuntu/localrepo.git"
@@ -73,31 +85,12 @@ func gitpreparation(){
 	if err := os.Chdir(path); err != nil {
 		panic(err)
 	}
-	//cmdName3 := "git"
-	//cmdArgs3 := "init" //git init
-	//if _, err := exec.Command(cmdName3, cmdArgs3).Output(); err != nil {
-	//	fmt.Fprintln(os.Stderr, "There was an error running git init command in local repository: ", err)
-	//}
 
 	cmdName := "git"
 	cmdArgs := []string {"clone","--bare","https://github.com/Dysar/CIproject.git", path} //git clone --bare
 	if _, err := exec.Command(cmdName, cmdArgs...).Output(); err != nil {
 		fmt.Fprintln(os.Stderr, "Repository already exits", err)
 	}
-
-	//cmdName4 := "git"
-	//cmdArgs4 := []string {"pull", "https://github.com/Dysar/CIproject"} //git pull
-	//if _, err := exec.Command(cmdName4, cmdArgs4...).Output(); err != nil {
-	//	fmt.Fprintln(os.Stderr, "There was an error running git pull command: ", err)
-	//	os.Exit(1)
-	//}
-	//
-	//cmdName2 := "git"
-	//cmdArgs2 := []string {"fetch", "https://github.com/Dysar/CIproject"} //git fetch
-	//if _, err := exec.Command(cmdName2, cmdArgs2...).Output(); err != nil {
-	//	fmt.Fprintln(os.Stderr, "There was an error running git fetch command: ", err)
-	//	os.Exit(1)
-	//}
 
 }
 func gitcheckout(hash string){
