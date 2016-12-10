@@ -72,7 +72,7 @@ func main() {
 			slackbot(rtm, msg)
 			os.Exit(1)
 		}
-		//send binaries to Slack via slackbot mazafaka
+		//send binaries to Slack via slackbot
 	}
 }
 func gotest()(bool){
