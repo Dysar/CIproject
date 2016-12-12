@@ -21,10 +21,10 @@ func main() {
 	server.Secret = "supersecretcode"
 	server.GoListenAndServe()
 
-	if err := os.Chdir("home/ubuntu"); err != nil {
+	if err := os.Chdir("/home/ubuntu"); err != nil {
 		panic(err)
 	}
-	file, _ := os.Open("conf.json")
+	file, _ := os.Open("conf.json") //config file
 	decoder := json.NewDecoder(file)
 	configuration := Configuration{}
 	err := decoder.Decode(&configuration)
@@ -50,15 +50,11 @@ func main() {
 			panic(err)
 		}
 		cmdName := "git"
-		cmdArgs := []string {"clone","/home/ubuntu/localrepo.git", "localrepo"} //git clone --bare, git fetch, git clone, git checkout
+		cmdArgs := []string {"clone","/home/ubuntu/localrepo.git", event.Commit} //git clone --bare, git fetch, git clone, git checkout
 		if _, err := exec.Command(cmdName, cmdArgs...).Output(); err != nil {
 			fmt.Fprintln(os.Stderr, "There was an error running git clone command: ", err)
 			os.Exit(1)
 		} //download latest files
-		err := os.Rename("localrepo",event.Commit)
-		if err != nil {
-			panic(err)
-		}
 		gitcheckout(event.Commit)
 		gotest() //run the test in that repo go test in that repo
 		rtm := api.NewRTM()
@@ -73,6 +69,7 @@ func main() {
 			os.Exit(1)
 		}
 		//send binaries to Slack via slackbot
+
 	}
 }
 func gotest()(bool){
